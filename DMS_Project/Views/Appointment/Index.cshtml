@@ -1,0 +1,34 @@
+﻿@model List<DMS_Project.Models.Entities.Appointment>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center text-success m-3">
+    All Appointments
+</h1>
+<h6 class="text-center text-secondary">
+    <sup class="text-danger fw-bolder">*</sup><b>Hint:</b> You can see more Details by clicking on the <span class="text-info fw-bold">Item Name</span>
+</h6>
+<a class="btn btn-outline-success mb-2" asp-action="New">Add Appointment</a>
+<table>
+    <thead>
+        <tr>
+            <th>Patient</th>
+            <th>Doctor</th>
+            <th>Date</th>
+            <th>Time</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Patient.Name</td>
+                <td>@item.Doctor.Name</td>
+                <td>@item.AppointmentDate.ToShortDateString()</td>
+                <td>@item.AppointmentTime</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

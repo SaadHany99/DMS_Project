@@ -1,4 +1,5 @@
 using DMS_Project.Models.Data;
+using DMS_Project.Repositories;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS_Project
@@ -15,6 +16,10 @@ namespace DMS_Project
             // Add database context
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+
+            // Add repository services
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+
 
             var app = builder.Build();
 

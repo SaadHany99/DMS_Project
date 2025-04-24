@@ -1,0 +1,17 @@
+﻿@model DMS_Project.Models.Entities.Appointment
+
+@{
+    ViewData["Title"] = "New";
+}
+
+<a class="btn btn-outline-danger" href="/Appointment/Index">Back To Appointments</a>
+<h1 class="text-center text-success mb-4">Create New Appointment</h1>
+<form asp-action="Create">
+    <input asp-for="Patient.Name" placeholder="Patient Name" />
+    <input asp-for="Patient.BirthDate" type="date" />
+
+    <select asp-for="DoctorId" asp-items="ViewBag.Doctors"></select>
+    <input asp-for="AppointmentDate" type="date" />
+    <input asp-for="AppointmentTime" type="time" />
+    <input type="submit" value="Book Appointment" />
+</form>
