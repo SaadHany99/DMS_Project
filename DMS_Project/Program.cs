@@ -1,3 +1,6 @@
+using DMS_Project.Models.Data;
+using Microsoft.EntityFrameworkCore;
+
 namespace DMS_Project
 {
     public class Program
@@ -8,6 +11,10 @@ namespace DMS_Project
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            // Add database context
+            builder.Services.AddDbContext<ApplicationDbContext>(options =>
+                options.UseLazyLoadingProxies().UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
             var app = builder.Build();
 
