@@ -6,12 +6,64 @@
 
 <a class="btn btn-outline-danger" href="/Appointment/Index">Back To Appointments</a>
 <h1 class="text-center text-success mb-4">Create New Appointment</h1>
-<form asp-action="Create">
-    <input asp-for="Patient.Name" placeholder="Patient Name" />
-    <input asp-for="Patient.BirthDate" type="date" />
 
-    <select asp-for="DoctorId" asp-items="ViewBag.Doctors"></select>
-    <input asp-for="AppointmentDate" type="date" />
-    <input asp-for="AppointmentTime" type="time" />
-    <input type="submit" value="Book Appointment" />
-</form>
+@using (Html.BeginForm("SaveNew", "Appointment", FormMethod.Post))
+{
+    <div class="form-group">
+        @Html.LabelFor(m => m.PatientId)
+        @Html.DropDownListFor(m => m.PatientId, (SelectList)ViewBag.Patients, "-- Select Patient --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.DoctorId)
+        @Html.DropDownListFor(m => m.DoctorId, (SelectList)ViewBag.Doctors, "-- Select Doctor --", new { @class = "form-control" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AppointmentDate)
+        @Html.TextBoxFor(m => m.AppointmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.AppointmentTime)
+        @Html.TextBoxFor(m => m.AppointmentTime, "{0:hh\\:mm}", new { @class = "form-control", type = "time" })
+    </div>
+
+    <div class="form-group">
+        @Html.LabelFor(m => m.Duration)
+        @Html.TextBoxFor(m => m.Duration, new { @class = "form-control", type = "number", min = "1", value = "30" })
+    </div>
+
+    <button type="submit" class="btn btn-primary">Add Appointment</button>
+}
+
+
+
+@* <form asp-action="Create">
+    <div class="form-group">
+        <label asp-for="PatientId"></label>
+        <select asp-for="PatientId" class="form-control" asp-items="ViewBag.Patients"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="DoctorId"></label>
+        <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.Doctors"></select>
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AppointmentDate"></label>
+        <input asp-for="AppointmentDate" type="date" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="AppointmentTime"></label>
+        <input asp-for="AppointmentTime" type="time" class="form-control" />
+    </div>
+
+    <div class="form-group">
+        <label asp-for="Duration"></label>
+        <input asp-for="Duration" class="form-control" value="30" />
+    </div>
+
+    <button type="submit" class="btn btn-primary">Save</button>
+</form> *@
