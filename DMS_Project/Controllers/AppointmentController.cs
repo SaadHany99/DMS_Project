@@ -1,6 +1,7 @@
 ﻿using DMS_Project.Models.Data;
 using DMS_Project.Models.Entities;
 using DMS_Project.Repositories;
+using DMS_Project.Services.AppointmentService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,10 +12,12 @@ namespace DMS_Project.Controllers
     {
         private readonly IGenericRepository<Appointment> _repository;
         private readonly ApplicationDbContext _context;
-        public AppointmentController(IGenericRepository<Appointment> repository, ApplicationDbContext context)
+        private readonly IAppointmentService _appointmentService;
+        public AppointmentController(IGenericRepository<Appointment> repository, ApplicationDbContext context, IAppointmentService appointmentService)
         {
             _repository = repository;
             _context = context;
+            _appointmentService = appointmentService;
         }
         public async Task<IActionResult> Index()
         {
@@ -36,8 +39,20 @@ namespace DMS_Project.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _repository.AddAsync(appointment);
-                return RedirectToAction("Index");
+                // Validate the appointment
+                if( await _appointmentService.ValidateAppointmentAsync(appointment.DoctorId, appointment.AppointmentDate.Add(appointment.AppointmentTime), appointment.AppointmentTime))
+                {
+                    // If valid, save the appointment
+                    await _repository.AddAsync(appointment);
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    ModelState.AddModelError("", "The selected appointment time is not available.");
+                    return BadRequest("Time slot is busy. Please choose another time.");
+                }
+                //await _repository.AddAsync(appointment);
+                //return RedirectToAction("Index");
             }
 
             // If model is not valid, refill the dropdowns

@@ -1,5 +1,6 @@
 using DMS_Project.Models.Data;
 using DMS_Project.Repositories;
+using DMS_Project.Services.AppointmentService;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS_Project
@@ -19,6 +20,7 @@ namespace DMS_Project
 
             // Add repository services
             builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<IAppointmentService, AppointmentService>();
 
 
             var app = builder.Build();
