@@ -30,7 +30,7 @@ namespace DMS_Project.Controllers
         {
             ViewBag.Patients = new SelectList(_context.Patients, "Id", "Name");
             ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "Name");
-            return View("Create");//Model =Null
+            return View("Create");
         }
 
         //Handel Submit requets (Method Post)
@@ -51,8 +51,6 @@ namespace DMS_Project.Controllers
                     ModelState.AddModelError("", "The selected appointment time is not available.");
                     return BadRequest("Time slot is busy. Please choose another time.");
                 }
-                //await _repository.AddAsync(appointment);
-                //return RedirectToAction("Index");
             }
 
             // If model is not valid, refill the dropdowns
