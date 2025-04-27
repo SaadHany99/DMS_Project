@@ -1,0 +1,30 @@
+﻿@model List<DMS_Project.Models.Entities.Doctor>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center text-success m-3">
+    All Doctors
+</h1>
+
+<a class="btn btn-outline-success mb-2" asp-action="New">Add Doctor</a>
+<table>
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Address</th>
+            <th>Clinic</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Name</td>
+                <td>@item.Address</td>
+                <td>@item.Clinic.Name</td>
+            </tr>
+        }
+    </tbody>
+</table>
+

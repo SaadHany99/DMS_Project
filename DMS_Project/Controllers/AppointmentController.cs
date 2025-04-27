@@ -4,7 +4,6 @@ using DMS_Project.Repositories;
 using DMS_Project.Services.AppointmentService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 
 namespace DMS_Project.Controllers
 {

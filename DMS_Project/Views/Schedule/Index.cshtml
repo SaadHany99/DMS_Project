@@ -1,0 +1,32 @@
+﻿@model List<DMS_Project.Models.Entities.Schedule>
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="text-center text-success m-3">
+    All Doctor Schedules
+</h1>
+
+<a class="btn btn-outline-success mb-2" asp-action="New">Add Schedule</a>
+<table>
+    <thead>
+        <tr>
+            <th>Doctor</th>
+            <th>DayOfWeek</th>
+            <th>StartTime</th>
+            <th>EndTime</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Doctor.Name</td>
+                <td>@item.DayOfWeek</td>
+                <td>@item.StartTime</td>
+                <td>@item.EndTime</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
