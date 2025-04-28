@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.AspNetCore.Mvc.ModelBinding.Validation;
+using System.ComponentModel.DataAnnotations;
 
 namespace DMS_Project.Models.Entities
 {
@@ -7,8 +8,10 @@ namespace DMS_Project.Models.Entities
         [Required(ErrorMessage = "Clinic is required.")]
         public int ClinicId { get; set; }
 
+        [ValidateNever]
         public virtual Clinic Clinic { get; set; }
 
+        [ValidateNever]
         public virtual List<Schedule> Schedules { get; set; }
     }
 }

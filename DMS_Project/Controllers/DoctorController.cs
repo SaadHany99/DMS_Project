@@ -1,15 +1,19 @@
-﻿using DMS_Project.Models.Entities;
+﻿using DMS_Project.Models.Data;
+using DMS_Project.Models.Entities;
 using DMS_Project.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMS_Project.Controllers
 {
     public class DoctorController : Controller
     {
         private readonly IGenericRepository<Doctor> _repository;
-        public DoctorController(IGenericRepository<Doctor> repository)
+        private readonly ApplicationDbContext _context;
+        public DoctorController(IGenericRepository<Doctor> repository, ApplicationDbContext context)
         {
             _repository = repository;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -19,6 +23,7 @@ namespace DMS_Project.Controllers
 
         public IActionResult New()
         {
+            ViewBag.Clinics = new SelectList(_context.Clinics, "Id", "Name");
             return View("Create");
         }
         [HttpPost]
@@ -29,27 +34,29 @@ namespace DMS_Project.Controllers
                 await _repository.AddAsync(doctor);
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Clinics = new SelectList(_context.Clinics, "Id", "Name");
             return View("Create", doctor);
         }
-        public async Task<IActionResult> Edit(int id)
-        {
-            var doctor = await _repository.GetByIdAsync(id);
-            if (doctor == null)
-            {
-                return NotFound();
-            }
-            return View("Edit", doctor);
-        }
-        [HttpPost]
-        public async Task<IActionResult> SaveEdit(Doctor doctor)
-        {
-            if (ModelState.IsValid)
-            {
-                await _repository.UpdateAsync(doctor);
-                return RedirectToAction("Index");
-            }
-            return View("Edit", doctor);
-        }
+        //public async Task<IActionResult> Edit(int id)
+        //{
+        //    var doctor = await _repository.GetByIdAsync(id);
+        //    if (doctor == null)
+        //    {
+        //        return NotFound();
+        //    }
+        //    return View("Edit", doctor);
+        //}
+        //[HttpPost]
+        //public async Task<IActionResult> SaveEdit(Doctor doctor)
+        //{
+        //    if (ModelState.IsValid)
+        //    {
+        //        await _repository.UpdateAsync(doctor);
+        //        return RedirectToAction("Index");
+        //    }
+        //    return View("Edit", doctor);
+        //}
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.DeleteAsync(id);

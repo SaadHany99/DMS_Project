@@ -4,6 +4,7 @@ using DMS_Project.Repositories;
 using DMS_Project.Services.AppointmentService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Newtonsoft.Json;
 
 namespace DMS_Project.Controllers
 {
@@ -39,7 +40,8 @@ namespace DMS_Project.Controllers
             if (ModelState.IsValid)
             {
                 // Validate the appointment
-                if( await _appointmentService.ValidateAppointmentAsync(appointment.DoctorId, appointment.AppointmentDate.Add(appointment.AppointmentTime), appointment.AppointmentTime))
+                var response = await _appointmentService.ValidateAppointmentAsync(appointment.DoctorId, appointment.AppointmentDate.Add(appointment.AppointmentTime), appointment.AppointmentTime, appointment.Duration);
+                if(response.Status)
                 {
                     // If valid, save the appointment
                     await _repository.AddAsync(appointment);
@@ -47,8 +49,11 @@ namespace DMS_Project.Controllers
                 }
                 else
                 {
-                    ModelState.AddModelError("", "The selected appointment time is not available.");
-                    return BadRequest("Time slot is busy. Please choose another time.");
+                    TempData["PopupData"] = response.Message;
+                    
+
+                    //ModelState.AddModelError("", "The selected appointment time is not available.");
+                    //return BadRequest("Time slot is busy. Please choose another time.");
                 }
             }
 

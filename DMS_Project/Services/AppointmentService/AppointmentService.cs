@@ -1,4 +1,5 @@
 ﻿using DMS_Project.Models.Data;
+using DMS_Project.Models.Helper;
 using Microsoft.EntityFrameworkCore;
 using System;
 
@@ -11,41 +12,61 @@ namespace DMS_Project.Services.AppointmentService
         {
             _context = context;
         }
-        public async Task<bool> ValidateAppointmentAsync(int doctorId, DateTime appointmentDateTime, TimeSpan appoinmetTime)
+        public async Task<GeneralResponse> ValidateAppointmentAsync(int doctorId, DateTime appointmentDateTime, TimeSpan appoinmetTime, int Duration)
         {
             var dayOfWeek = appointmentDateTime.DayOfWeek.ToString();
 
-            // 1. تأكد الدكتور عنده جدول عمل في اليوم ده
+            // 1. Verify that the Selected Doctor work on that Day
             var schedule = await _context.Schedules
                 .FirstOrDefaultAsync(s => s.DoctorId == doctorId && s.DayOfWeek == dayOfWeek);
 
             if (schedule == null)
-                return false; // مفيش جدول للدكتور في اليوم ده
+                return new GeneralResponse
+                {
+                    Status = false,
+                    Message = "No schedule found for the selected doctor on this day."
+                };
 
-            // 2. تأكد ميعاد الحجز داخل ساعات العمل
-            //var appointmentTime = appointmentDateTime.TimeOfDay;
+            // 2. Verify that the AppointmentDate is in valid work Time for the Doctor
 
-
-            //if (appoinmetTime.Hours > 12)
-            //{
-            //    appoinmetTime= appoinmetTime.Hours-12;
-            //}
             // Convert appointment time to 12-hour format if necessary
             TimeSpan adjustedAppointmentTime = appoinmetTime.Hours > 12
                 ? appoinmetTime.Subtract(TimeSpan.FromHours(12))
                 : appoinmetTime;
 
             if (adjustedAppointmentTime < schedule.StartTime || adjustedAppointmentTime > schedule.EndTime)
-                return false; // الحجز خارج ساعات العمل
+                return new GeneralResponse
+                {
+                    Status = false,
+                    Message = "The appointment time is outside of working hours."
+                };
 
-            // 3. تأكد مفيش حجز تاني في نفس الوقت
-            bool conflict = await _context.Appointments
-                .AnyAsync(a => a.DoctorId == doctorId && a.AppointmentDate == appointmentDateTime);
+            // 3. Verify that the AppointmentDate not conflict with other appointments
+            var newAppointmentEndTime = appoinmetTime + TimeSpan.FromMinutes(Duration);
+
+            
+            var appointments = await _context.Appointments
+                .Where(a => a.DoctorId == doctorId && a.AppointmentDate == appointmentDateTime.Date)
+                .ToListAsync();
+
+            
+            bool conflict = appointments.Any(a =>
+                appoinmetTime < a.AppointmentTime.Add(TimeSpan.FromMinutes(a.Duration)) &&
+                newAppointmentEndTime > a.AppointmentTime
+            );
+
 
             if (conflict)
-                return false; // فيه حجز تاني في نفس الميعاد
+                return new GeneralResponse
+                {
+                    Status = false,
+                    Message = "The selected appointment time is already booked."
+                };
 
-            return true; // ✅ الميعاد متاح
+            return new GeneralResponse
+            {
+                Status = true,
+            };
         }
     }
 

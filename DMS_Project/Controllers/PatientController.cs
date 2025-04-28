@@ -21,6 +21,7 @@ namespace DMS_Project.Controllers
         {
             return View("Create");
         }
+
         [HttpPost]
         public async Task<IActionResult> SaveNew(Patient patient)
         {

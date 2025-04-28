@@ -26,7 +26,7 @@ namespace DMS_Project.Models.Entities
         public TimeSpan AppointmentTime { get; set; }
 
         [Required(ErrorMessage = "Duration is required.")]
-        [Range(1, 60, ErrorMessage = "Duration must be between 1 and 300 minutes.")]
+        [Range(1, 60, ErrorMessage = "Duration must be between 1 and 60 minutes.")]
         public int Duration { get; set; } = 30;
     }
 }

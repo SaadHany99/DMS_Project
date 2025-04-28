@@ -1,15 +1,19 @@
-﻿using DMS_Project.Models.Entities;
+﻿using DMS_Project.Models.Data;
+using DMS_Project.Models.Entities;
 using DMS_Project.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace DMS_Project.Controllers
 {
     public class ScheduleController : Controller
     {
         private readonly IGenericRepository<Schedule> _repository;
-        public ScheduleController(IGenericRepository<Schedule> repository)
+        private readonly ApplicationDbContext _context;
+        public ScheduleController(IGenericRepository<Schedule> repository, ApplicationDbContext context)
         {
             _repository = repository;
+            _context = context;
         }
         public async Task<IActionResult> Index()
         {
@@ -19,6 +23,7 @@ namespace DMS_Project.Controllers
         //Handel link Open Empty View
         public IActionResult New()
         {
+            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "Name");
             return View("Create");
         }
         //Handel Submit requets (Method Post)
@@ -31,6 +36,8 @@ namespace DMS_Project.Controllers
                 await _repository.AddAsync(schedule);
                 return RedirectToAction("Index");
             }
+
+            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "Name");
             return View("Create", schedule);
         }
         public async Task<IActionResult> Edit(int id)
