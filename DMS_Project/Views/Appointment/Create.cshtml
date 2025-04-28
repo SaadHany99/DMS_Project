@@ -1,74 +1,90 @@
 ﻿@model DMS_Project.Models.Entities.Appointment
 
 @{
-    ViewData["Title"] = "New";
+    ViewData["Title"] = "New Appointment";
 }
 
-<a class="btn btn-outline-danger" href="/Appointment/Index">Back To Appointments</a>
-<h1 class="text-center text-success mb-4">Create New Appointment</h1>
-
-@using (Html.BeginForm("SaveNew", "Appointment", FormMethod.Post))
-{
-    <div class="form-group">
-        @Html.LabelFor(m => m.PatientId)
-        @Html.DropDownListFor(m => m.PatientId, (SelectList)ViewBag.Patients, "-- Select Patient --", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.PatientId, "", new { @class = "text-danger" })
+<div class="container my-5 animate__animated animate__fadeIn">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1 class="text-success fw-bold display-5">Create New Appointment</h1>
+        <a class="btn btn-outline-danger btn-lg shadow-sm animate__animated animate__fadeInDown" href="/Appointment/Index">
+            <i class="bi bi-arrow-left-circle"></i> Back
+        </a>
     </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.DoctorId)
-        @Html.DropDownListFor(m => m.DoctorId, (SelectList)ViewBag.Doctors, "-- Select Doctor --", new { @class = "form-control" })
-        @Html.ValidationMessageFor(m => m.DoctorId, "", new { @class = "text-danger" })
-    </div>
+    @using (Html.BeginForm("SaveNew", "Appointment", FormMethod.Post))
+    {
+        <div class="row g-3">
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    @Html.DropDownListFor(m => m.PatientId, (SelectList)ViewBag.Patients, "-- Select Patient --", new { @class = "form-select" })
+                    @Html.LabelFor(m => m.PatientId)
+                    @Html.ValidationMessageFor(m => m.PatientId, "", new { @class = "text-danger small" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.AppointmentDate)
-        @Html.TextBoxFor(m => m.AppointmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
-        @Html.ValidationMessageFor(m => m.AppointmentDate, "", new { @class = "text-danger" })
-    </div>
+            <div class="col-md-6">
+                <div class="form-floating mb-3">
+                    @Html.DropDownListFor(m => m.DoctorId, (SelectList)ViewBag.Doctors, "-- Select Doctor --", new { @class = "form-select" })
+                    @Html.LabelFor(m => m.DoctorId)
+                    @Html.ValidationMessageFor(m => m.DoctorId, "", new { @class = "text-danger small" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.AppointmentTime)
-        @Html.TextBoxFor(m => m.AppointmentTime, "{0:hh\\:mm}", new { @class = "form-control", type = "time" })
-        @Html.ValidationMessageFor(m => m.AppointmentTime, "", new { @class = "text-danger" })
-    </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.AppointmentDate, "{0:yyyy-MM-dd}", new { @class = "form-control", type = "date" })
+                    @Html.LabelFor(m => m.AppointmentDate)
+                    @Html.ValidationMessageFor(m => m.AppointmentDate, "", new { @class = "text-danger small" })
+                </div>
+            </div>
 
-    <div class="form-group">
-        @Html.LabelFor(m => m.Duration)
-        @Html.TextBoxFor(m => m.Duration, new { @class = "form-control", type = "number", min = "1", value = "30" })
-        @Html.ValidationMessageFor(m => m.Duration, "", new { @class = "text-danger" })
-    </div>
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.AppointmentTime, "{0:hh\\:mm}", new { @class = "form-control", type = "time" })
+                    @Html.LabelFor(m => m.AppointmentTime)
+                    @Html.ValidationMessageFor(m => m.AppointmentTime, "", new { @class = "text-danger small" })
+                </div>
+            </div>
 
-    <button type="submit" class="btn btn-primary">Add Appointment</button>
-}
+            <div class="col-md-4">
+                <div class="form-floating mb-3">
+                    @Html.TextBoxFor(m => m.Duration, new { @class = "form-control", type = "number", min = "1", value = "30" })
+                    @Html.LabelFor(m => m.Duration)
+                    @Html.ValidationMessageFor(m => m.Duration, "", new { @class = "text-danger small" })
+                </div>
+            </div>
+        </div>
 
+        <div class="d-flex justify-content-center mt-4">
+            <button type="submit" class="btn btn-success btn-lg px-5 shadow-sm animate__animated animate__pulse">
+                <i class="bi bi-plus-circle-dotted"></i> Add Appointment
+            </button>
+        </div>
+    }
+</div>
 
+<!-- Load Animate.css + Bootstrap Icons if not loaded yet -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
 
-@* <form asp-action="Create">
-    <div class="form-group">
-        <label asp-for="PatientId"></label>
-        <select asp-for="PatientId" class="form-control" asp-items="ViewBag.Patients"></select>
-    </div>
+<style>
+    .form-floating > .form-control, .form-floating > .form-select {
+        height: calc(3.5rem + 2px);
+        padding: 1rem 0.75rem;
+    }
 
-    <div class="form-group">
-        <label asp-for="DoctorId"></label>
-        <select asp-for="DoctorId" class="form-control" asp-items="ViewBag.Doctors"></select>
-    </div>
+    .form-floating > label {
+        padding: 0.75rem 0.75rem;
+        pointer-events: none;
+        font-weight: bold;
+        color: #6c757d;
+    }
 
-    <div class="form-group">
-        <label asp-for="AppointmentDate"></label>
-        <input asp-for="AppointmentDate" type="date" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="AppointmentTime"></label>
-        <input asp-for="AppointmentTime" type="time" class="form-control" />
-    </div>
-
-    <div class="form-group">
-        <label asp-for="Duration"></label>
-        <input asp-for="Duration" class="form-control" value="30" />
-    </div>
-
-    <button type="submit" class="btn btn-primary">Save</button>
-</form> *@
+    button.btn-success:hover {
+        background: linear-gradient(135deg, #28a745, #218838);
+        border-color: transparent;
+        transform: scale(1.05);
+        transition: all 0.4s ease;
+    }
+</style>
