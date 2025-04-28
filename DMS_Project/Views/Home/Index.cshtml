@@ -2,7 +2,44 @@
     ViewData["Title"] = "Home Page";
 }
 
+<style>
+    .custom-btn {
+        transition: all 0.3s ease;
+        padding: 0.75rem 2rem;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px; /* مسافة بين الأيقونة والكلمة */
+    }
+
+        .custom-btn:hover {
+            background-color: #0dcaf0;
+            color: white;
+            transform: scale(1.05);
+        }
+
+        .custom-btn i {
+            font-size: 1.2rem; /* حجم الأيقونة */
+        }
+</style>
+
 <div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <h1 class="display-4">Welcome To <span class="text-secondary fw-bolder">Clinica</span></h1>
+    <h3 class="text-secondary">Your Health is Our Priority</h3>
 </div>
+
+<div class="d-flex justify-content-center gap-4 mt-5 flex-wrap">
+    <a class="btn btn-outline-info btn-lg custom-btn" asp-controller="Doctor" asp-action="Index">
+        <i class="bi bi-person-badge"></i> Doctors
+    </a>
+    <a class="btn btn-outline-info btn-lg custom-btn" asp-controller="Patient" asp-action="Index">
+        <i class="bi bi-people"></i> Patient
+    </a>
+    <a class="btn btn-outline-info btn-lg custom-btn" asp-controller="Clinic" asp-action="Index">
+        <i class="bi bi-hospital"></i> Clinic
+    </a>
+    <a class="btn btn-outline-info btn-lg custom-btn" asp-controller="Schedule" asp-action="Index">
+        <i class="bi bi-calendar-event"></i> Schedule
+    </a>
+</div>
+

@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace DMS_Project.Models.Entities
 {
     public class Patient : BaseModel
     {
+        [Required(ErrorMessage = "Birth Date is required.")]
+
         public DateTime BirthDate { get; set; }
 
         [NotMapped]
