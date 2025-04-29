@@ -1,4 +1,5 @@
 ﻿using DMS_Project.Models.Data;
+using DMS_Project.Models.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace DMS_Project.Repositories

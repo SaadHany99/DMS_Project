@@ -1,7 +1,6 @@
 ﻿using DMS_Project.Models.Data;
 using DMS_Project.Models.Helper;
 using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace DMS_Project.Services.AppointmentService
 {

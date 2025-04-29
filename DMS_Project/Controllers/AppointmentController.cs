@@ -4,7 +4,6 @@ using DMS_Project.Repositories;
 using DMS_Project.Services.AppointmentService;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Newtonsoft.Json;
 
 namespace DMS_Project.Controllers
 {
@@ -25,15 +24,12 @@ namespace DMS_Project.Controllers
             return View(appointments);
         }
 
-        //Handel link Open Empty View 
         public IActionResult New()
         {
-            ViewBag.Patients = new SelectList(_context.Patients, "Id", "Name");
-            ViewBag.Doctors = new SelectList(_context.Doctors, "Id", "Name");
+            FillDropdowns();
             return View("Create");
         }
 
-        //Handel Submit requets (Method Post)
         [HttpPost]
         public async Task<IActionResult> SaveNew(Appointment appointment)
         {
@@ -49,18 +45,12 @@ namespace DMS_Project.Controllers
                 }
                 else
                 {
-                    TempData["PopupData"] = response.Message;
-                    
-
-                    //ModelState.AddModelError("", "The selected appointment time is not available.");
-                    //return BadRequest("Time slot is busy. Please choose another time.");
+                    // If not valid, store the msg in TempData to Display for user.
+                    TempData["PopupData"] = response.Message;   
                 }
             }
 
-            // If model is not valid, refill the dropdowns
-            ViewBag.Patients = new SelectList(_context.Patients.ToList(), "Id", "Name", appointment.PatientId);
-            ViewBag.Doctors = new SelectList(_context.Doctors.ToList(), "Id", "Name", appointment.DoctorId);
-
+            FillDropdowns(appointment.PatientId, appointment.DoctorId);
             return View("Create", appointment);
         }
 
@@ -69,5 +59,13 @@ namespace DMS_Project.Controllers
             await _repository.DeleteAsync(id);
             return RedirectToAction("Index");
         }
+
+        // Helper Method
+        private void FillDropdowns(int? selectedPatientId = null, int? selectedDoctorId = null)
+        {
+            ViewBag.Patients = new SelectList(_context.Patients.ToList(), "Id", "Name", selectedPatientId);
+            ViewBag.Doctors = new SelectList(_context.Doctors.ToList(), "Id", "Name", selectedDoctorId);
+        }
+
     }
 }

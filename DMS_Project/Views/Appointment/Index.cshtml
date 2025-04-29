@@ -8,7 +8,7 @@
     <h1 class="text-center text-success mb-4 fw-bold display-4">
         All Appointments
     </h1>
-    <h6 class="text-center mb-4"><span class="text-danger fw-bolder">Note:</span> The Appointment for Patient include (Appointment Time + Duration)</h6>
+    <h6 class="text-center mb-4"><span class="text-danger fw-bolder">Note:</span> The Appointment for Patient include (Time + Duration)</h6>
 
     <div class="d-flex justify-content-end mb-4">
         <a class="btn btn-success btn-lg shadow-sm animate__animated animate__fadeInDown" asp-action="New">
@@ -43,7 +43,12 @@
     </div>
 </div>
 
-<!-- Load Animate.css library -->
+
+
+
+
+
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 
 <style>
@@ -67,7 +72,6 @@
             transform: scale(1.05);
         }
 
-    /* Special Hover for Table Rows */
     .table-row-hover:hover {
         background-color: #e6f7ff !important;
         transition: background-color 0.3s ease;

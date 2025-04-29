@@ -26,6 +26,7 @@ namespace DMS_Project.Controllers
             ViewBag.Clinics = new SelectList(_context.Clinics, "Id", "Name");
             return View("Create");
         }
+
         [HttpPost]
         public async Task<IActionResult> SaveNew(Doctor doctor)
         {
@@ -38,25 +39,6 @@ namespace DMS_Project.Controllers
             ViewBag.Clinics = new SelectList(_context.Clinics, "Id", "Name");
             return View("Create", doctor);
         }
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var doctor = await _repository.GetByIdAsync(id);
-        //    if (doctor == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View("Edit", doctor);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> SaveEdit(Doctor doctor)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _repository.UpdateAsync(doctor);
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View("Edit", doctor);
-        //}
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.DeleteAsync(id);

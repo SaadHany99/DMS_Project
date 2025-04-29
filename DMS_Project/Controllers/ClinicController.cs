@@ -21,7 +21,7 @@ namespace DMS_Project.Controllers
         {
             return View("Create");
         }
-        //Handel Submit requets (Method Post)
+
         [HttpPost]
         public async Task<IActionResult> SaveNew(Clinic clinic)
         {
@@ -32,25 +32,6 @@ namespace DMS_Project.Controllers
             }
             return View("Create", clinic);
         }
-        //public async Task<IActionResult> Edit(int id)
-        //{
-        //    var clinic = await _repository.GetByIdAsync(id);
-        //    if (clinic == null)
-        //    {
-        //        return NotFound();
-        //    }
-        //    return View("Edit", clinic);
-        //}
-        //[HttpPost]
-        //public async Task<IActionResult> SaveEdit(Clinic clinic)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        await _repository.UpdateAsync(clinic);
-        //        return RedirectToAction("Index");
-        //    }
-        //    return View("Edit", clinic);
-        //}
         public async Task<IActionResult> Delete(int id)
         {
             await _repository.DeleteAsync(id);
